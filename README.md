@@ -1,4 +1,4 @@
-# vuex-practice
+# Vue/Vuex practice
 
 ## Project setup
 ```
