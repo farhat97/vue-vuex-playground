@@ -5,6 +5,7 @@
         <div class="todos">
             <div v-bind:key="todo.id" v-for="todo in allTodos" class="todo">
                 {{ todo.title }}
+                <font-awesome-icon icon="trash" class="icon" v-on:click="deleteTodo(todo.id)"/>
             </div>
         </div>
     </div>    
@@ -17,7 +18,7 @@ export default {
     name: "Todos",
     computed: mapGetters(['allTodos']),
     methods: {
-        ...mapActions(['fetchTodos'])
+        ...mapActions(['fetchTodos', 'deleteTodo'])
     },
     created() {
         this.fetchTodos();
@@ -41,5 +42,14 @@ export default {
     text-align: center;
     position: relative;
     cursor: pointer;
+}
+.icon
+{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
 }
 </style>
