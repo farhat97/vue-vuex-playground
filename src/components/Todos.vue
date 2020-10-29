@@ -1,9 +1,23 @@
 <template>
     <div>
         <h3> Todos </h3>
-
+        <div class="legend">
+            <span>Double click to mark as complete </span>
+            <span>
+                <span class="incomplete-box"></span> = Incomplete
+            </span>
+            <span>
+                <span class="complete-box"></span> = Complete
+            </span>
+        </div>
+        
         <div class="todos">
-            <div v-bind:key="todo.id" v-for="todo in allTodos" class="todo">
+            <div 
+                v-for="todo in allTodos"
+                @dblclick="onDblClick(todo)" 
+                v-bind:key="todo.id" 
+                class="todo"
+                v-bind:class="{'is-complete':todo.completed}">
                 {{ todo.title }}
                 <font-awesome-icon icon="trash" class="icon" v-on:click="deleteTodo(todo.id)"/>
             </div>
@@ -18,7 +32,15 @@ export default {
     name: "Todos",
     computed: mapGetters(['allTodos']),
     methods: {
-        ...mapActions(['fetchTodos', 'deleteTodo'])
+        ...mapActions(['fetchTodos', 'deleteTodo', 'updateTodo']),
+        onDblClick(todo) {
+            const updatedTodo = {
+                ...todo,
+                completed: !todo.completed
+            }
+
+            this.updateTodo(updatedTodo);
+        }
     },
     created() {
         this.fetchTodos();
@@ -36,7 +58,7 @@ export default {
 .todo
 {
     border: 1px solid #ccc;
-    background: #41b883;
+    background: #07db83;
     padding: 1rem;
     border-radius: 5px;
     text-align: center;
@@ -51,5 +73,37 @@ export default {
     color: #fff;
     cursor: pointer;
     font-size: 13px;
+}
+.legend
+{
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1rem;
+}
+.complete-box
+{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #35495e;
+}
+.is-complete
+{
+    background: #545c59;
+    color: #fff;
+}
+.incomplete-box
+{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #07db83;
+}
+@media (max-width: 500px)
+{
+    .todos
+    {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
