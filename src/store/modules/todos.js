@@ -29,13 +29,21 @@ const actions = {
         await axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`);
 
         commit('removeTodo', id);
+    },
+    async filterTodos({ commit }, limit) {
+        // get selected number to filter
+        const response = await axios.get(
+            `https://jsonplaceholder.typicode.com/todos?_limit=${limit}`
+        );
+        commit('filteredTodos', response.data);
     }
 };
 
 const mutations = {
     setTodos: (state, todos) => (state.todos = todos),
     newTodo: (state, todo) => state.todos.unshift(todo),
-    removeTodo: (state, id) => state.todos = state.todos.filter(todo => todo.id !== id)
+    removeTodo: (state, id) => state.todos = state.todos.filter(todo => todo.id !== id),
+    filteredTodos: (state, todos) => (state.todos = todos)
 };
 
 // technically, you would do "state: state, getters: getters".. and so on
